@@ -14,15 +14,23 @@ export default defineConfig({
         {
           text: "构建配置",
           items: [
-            { text: "主题色", link: "/frontend/build/color" },
             { text: "字体", link: "/frontend/build/font" },
-            { text: "环境变量", link: "/frontend/build/env" }
+            { text: "环境变量", link: "/frontend/build/env" },
+            { text: "打包体积", link: "/frontend/build/build-size" },
+            { text: "小程序调试", link: "/frontend/build/debug" },
           ]
         },
         {
           text: "业务归类",
           items: [
             { text: "版本更新", link: "/frontend/business/version" },
+            { text: "主题色", link: "/frontend/business/color" },
+          ]
+        },
+        {
+          text: "其他",
+          items: [
+            { text: "常见问题处理", link: "/frontend/other/issues" },
           ]
         }
       ]
