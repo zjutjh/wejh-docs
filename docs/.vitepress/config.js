@@ -1,6 +1,7 @@
 import { defineConfig } from "vitepress";
 
 export default defineConfig({
+  base: "/wejh-docs/",
   title: "微精弘开发文档",
   description: "docs for wejh weapp development",
   themeConfig: {
