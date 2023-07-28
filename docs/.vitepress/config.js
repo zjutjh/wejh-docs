@@ -34,7 +34,21 @@ export default defineConfig({
             { text: "常见问题处理", link: "/frontend/other/issues" },
           ]
         }
-      ]
+      ],
+      "/backend/":[
+      	{
+          text: "项目介绍",
+          items: [
+            { text: "后端项目简介", link: "/backend/business/introduction" },
+          ]
+       	},
+        {
+          text: "构建配置",
+          items: [
+            { text: "项目构建", link: "/backend/build/build" },
+          ]
+       	},
+      ],
     },
     footer: {
       message: "内部资料，请勿外传",
