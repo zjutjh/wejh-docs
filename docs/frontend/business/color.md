@@ -15,47 +15,13 @@
 固定组件配色直接使用 `/src/style/variables` 中的相关配色即可，与主题色相关的组件配色可以使用上文提及的三个主题配色。
 
 ### 如何实现主题切换
-针对主题的切换，采用新组件 `theme-config` 。
+针对主题的切换，采用新组件 `theme-config`作为页面最外层的标签项。
 
 >通过将整个页面包裹在该组件下，使得该组件的主题颜色能够控制整个页面的颜色渲染。
 
 该组件的变量中的 `themeMode` 通过计算属性获取**全局存储变量** `serviceStore.theme.themeMode` ，它的值会改变组件选取的 `className` 选择不同主题色调。
 
-```scss
-.theme.green {
-  --wjh-color-primary-light: var(--wjh-color-green-500);
-  --wjh-color-primary: var(--wjh-color-green-600);
-  --wjh-color-primary-dark: var(--wjh-color-green-700);
-
-  background-image: url('~@/assets/photos/background.svg');
-}
-
-.theme.yellow {
-  --wjh-color-primary-light: var(--wjh-color-yellow-500);
-  --wjh-color-primary: var(--wjh-color-yellow-600);
-  --wjh-color-primary-dark: var(--wjh-color-yellow-700);
-
-  background-image: url('~@/assets/photos/background-yellow.svg');
-}
-
-.theme.blue {
-  --wjh-color-primary-light: var(--wjh-color-blue-500);
-  --wjh-color-primary: var(--wjh-color-blue-600);
-  --wjh-color-primary-dark: var(--wjh-color-blue-700);
-
-  background-image: url('~@/assets/photos/background-blue.svg');
-}
-
-.theme.pink {
-  --wjh-color-primary-light: var(--wjh-color-pink-500);
-  --wjh-color-primary: var(--wjh-color-pink-600);
-  --wjh-color-primary-dark: var(--wjh-color-pink-700);
-
-  background-image: url('~@/assets/photos/background-pink.svg');
-}
-```
-
-通过改变 `themeMode` 的值，组件将会选取不同的主题色变量对整个页面进行渲染，同时会改变背景图片。
+>通过改变 `themeMode` 的值，组件将会选取不同的主题色变量对整个页面进行渲染，同时会改变背景图片。
 
 ## 深色和浅色模式的切换
 深色模式的实现同样与组件 `theme-config` 相关，同样通过该组件调取`hook`获得有关深色模式的**全局存储变量**。
@@ -66,56 +32,9 @@
 
 深色模式的 `hook` 定义在 `/src/hooks/useDarkMode.ts`中。
 
-```ts
-const useDarkMode = () => {
-  const mode = computed(() => serviceStore.theme.darkMode.mode);
-  const isAdapted = computed(() => serviceStore.theme.darkMode.isAdapted);
-
-  const handleModeChange = (e) => {
-    if (isAdapted.value === true) {
-      setMode(e.theme as DarkModeTheme);
-    }
-  };
-
-  const setIsAdapted = async (value: boolean) => {
-    store.commit("setDarkModeAdapted", value);
-    if (value === true) {
-      const sysInfo = await Taro.getSystemInfo();
-      setMode(sysInfo.theme as DarkModeTheme);
-    }
-  };
-
-  const setMode = async (value: DarkModeTheme) => {
-    store.commit("setDarkMode", value);
-  };
-
-  onMounted(async () => {
-    if (isAdapted.value) {
-      const sysInfo = await Taro.getSystemInfo();
-      setMode(sysInfo.theme as DarkModeTheme);
-    }
-
-    Taro.onThemeChange(handleModeChange);
-  });
-
-  onUnmounted(() => {
-    Taro.offThemeChange(handleModeChange);
-  });
-
-  return {
-    mode,
-    isAdapted,
-    setMode,
-    setIsAdapted
-  };
-};
-
-export default useDarkMode;
-```
-
 上述代码中`mode`获取全局变量中的模式设定值，来选择深浅色主题模式。  
 
->其中`isAdapted`用来判断是否设置自适应手机深浅模式，再通过 `Taro.getSystemInfo()` 函数来获取手机深色模式的设定值。
+>通过 `Taro.getSystemInfo()` 函数来监听手机深色模式的设定值。
 
 通过调用此 `hook` 即可对深色模式进行三种切换--“深色模式”、“浅色模式”和“自适应模式”。
 
